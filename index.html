@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	
+	<body>
+		<canvas id = "gameCanvas" width = "640" height = "480">
+			This text will display if your browser does not support HTML5</canvas>
+	
+		<script src="keyboard.js"></script>
+	
+		<script>
+		
+			var canvas = document.getElementById("gameCanvas");
+			var context = canvas.getContext("2d");
+			
+			var image = document.createElement("img");
+			image.src ="hero.png";
+			
+			var rotation = 1;
+			
+			var CanDraw = false;
+			
+			function Update()
+			{
+				rotation += 0.01;
+				
+				CanDraw = false;
+				
+				if(keyboard.isKeyDown(keyboard.KEY_SPACE))
+				{
+					CanDraw = true;
+				}
+			}
+		
+			function Draw()
+			{
+				// Clear the screen
+				context.fillStyle = 'rgb(101,156,239)';
+				context.fillRect(0,0,canvas.width,canvas.height);
+				
+				if(CanDraw == true)
+				{
+				// Draw the image at the center of the screen
+				// rotating around the center.
+				context.save();
+				context.translate(canvas.width/2,canvas.height/2); // Draw the image in the center of the screen.
+				context.rotate(rotation);
+				context.drawImage(image,-image.width/2,-image.height/2); // Specify the pivot point of the image.
+				context.restore();
+				
+				// Draw the image, specifiy its width and height.
+				context.save();
+				context.translate(0,0) // Set in the top left of the screen
+				context.rotate(rotation);
+				context.drawImage(image,200,10,image.width/2,image.height/2);
+				context.restore();
+				
+				// draw and rotate an image with a custom width and height.
+				// rotate around the center.
+				context.save();
+				context.translate(64,canvas.height/2); 
+				context.rotate(rotation);
+				context.drawImage(image,-32,-32,image.width,image.height);
+				context.restore();
+				}
+
+				
+			}
+			
+			function GameLoop()
+			{
+				Update();
+				Draw();
+				
+				// Ask the browser to call the GameLoop functio again.
+				requestAnimationFrame(GameLoop);
+			}
+			
+			GameLoop();
+		
+		</script>
+	
+	</body>
+	
+</html>
